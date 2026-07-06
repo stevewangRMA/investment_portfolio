@@ -1,0 +1,29 @@
+{
+  "sample": true,
+  "updated": "2026-07-03",
+  "currency": "USD",
+  "series": [
+    {"date": "2026-04-01", "nav": 25000.00},
+    {"date": "2026-04-08", "nav": 24620.00},
+    {"date": "2026-04-15", "nav": 25110.00},
+    {"date": "2026-04-22", "nav": 25480.00},
+    {"date": "2026-04-29", "nav": 25320.00},
+    {"date": "2026-05-06", "nav": 25890.00},
+    {"date": "2026-05-13", "nav": 26140.00},
+    {"date": "2026-05-20", "nav": 25980.00},
+    {"date": "2026-05-27", "nav": 26410.00},
+    {"date": "2026-06-03", "nav": 26720.00},
+    {"date": "2026-06-10", "nav": 26550.00},
+    {"date": "2026-06-17", "nav": 26900.00},
+    {"date": "2026-06-24", "nav": 27120.00},
+    {"date": "2026-07-01", "nav": 27260.00},
+    {"date": "2026-07-03", "nav": 27350.00}
+  ],
+  "positions": [
+    {"symbol": "VOO", "name": "Vanguard S&P 500 ETF", "qty": 16, "price": 612.50, "value": 9800.00, "pnl": 800.00, "pnlPct": 8.89},
+    {"symbol": "NVDA", "name": "NVIDIA Corp", "qty": 35, "price": 177.14, "value": 6200.00, "pnl": 1400.00, "pnlPct": 29.17},
+    {"symbol": "MSFT", "name": "Microsoft Corp", "qty": 10, "price": 490.00, "value": 4900.00, "pnl": 350.00, "pnlPct": 7.69},
+    {"symbol": "PM", "name": "Philip Morris International", "qty": 20, "price": 187.50, "value": 3750.00, "pnl": 550.00, "pnlPct": 17.19},
+    {"symbol": "U", "name": "Unity Software", "qty": 100, "price": 27.00, "value": 2700.00, "pnl": -300.00, "pnlPct": -10.00}
+  ]
+}

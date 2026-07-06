@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stephen Wang — Finance & Investing</title>
+<meta name="description" content="Stephen Wang — NYU Economics student focused on investment banking, private equity, and equity research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --soft: #555;
+    --faint: #8a8a8a;
+    --line: #e6e2da;
+    --bg: #faf9f6;
+    --card: #ffffff;
+    --accent: #1f3a5f;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+    font-weight: 300;
+    font-size: 16px;
+  }
+  h1, h2, h3, .serif { font-family: 'Newsreader', Georgia, serif; font-weight: 400; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250,249,246,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 780px; margin: 0 auto; padding: 16px 24px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .nav-name { font-family: 'Newsreader', serif; font-size: 1.05rem; letter-spacing: 0.02em; color: var(--ink); }
+  .nav-links a { font-size: 0.82rem; color: var(--soft); margin-left: 22px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+
+  /* Hero */
+  header.hero { padding: 96px 0 72px; }
+  .hero h1 { font-size: 3.2rem; line-height: 1.1; font-weight: 400; letter-spacing: -0.01em; }
+  .hero .tagline { margin-top: 20px; font-size: 1.12rem; color: var(--soft); max-width: 560px; }
+  .hero .meta { margin-top: 28px; font-size: 0.88rem; color: var(--faint); letter-spacing: 0.03em; }
+  .hero .meta span { margin-right: 18px; }
+
+  /* Sections */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  .sec-label {
+    font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--faint); font-family: 'Inter', sans-serif; font-weight: 500;
+    margin-bottom: 32px;
+  }
+
+  /* Experience */
+  .job { display: grid; grid-template-columns: 160px 1fr; gap: 20px; padding: 22px 0; }
+  .job + .job { border-top: 1px solid var(--line); }
+  .job .when { font-size: 0.82rem; color: var(--faint); padding-top: 4px; letter-spacing: 0.02em; }
+  .job h3 { font-size: 1.25rem; }
+  .job .role { font-size: 0.9rem; color: var(--soft); margin: 2px 0 10px; font-style: italic; font-family: 'Newsreader', serif; }
+  .job p { font-size: 0.93rem; color: var(--soft); max-width: 560px; }
+  .points { list-style: none; max-width: 580px; }
+  .points li {
+    font-size: 0.93rem; color: var(--soft);
+    padding-left: 18px; position: relative; margin-bottom: 8px;
+  }
+  .points li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
+
+  /* Projects */
+  .projects { display: grid; gap: 20px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 28px 30px; transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .card:hover { box-shadow: 0 8px 28px rgba(31,58,95,0.08); transform: translateY(-2px); }
+  .card .tag { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 500; font-family: 'Inter', sans-serif; }
+  .card h3 { font-size: 1.35rem; margin: 8px 0 10px; }
+  .card p { font-size: 0.93rem; color: var(--soft); }
+  .card .facts { margin-top: 14px; font-size: 0.82rem; color: var(--faint); }
+  .card .facts span { margin-right: 16px; }
+  .card .actions { margin-top: 18px; display: flex; gap: 12px; }
+  .btn {
+    font-size: 0.82rem; letter-spacing: 0.04em; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--accent); color: var(--accent); background: none;
+    padding: 8px 20px; border-radius: 999px; font-family: 'Inter', sans-serif;
+    transition: background 0.2s ease, color 0.2s ease; text-decoration: none; display: inline-block;
+  }
+  .btn:hover { background: var(--accent); color: #fff; text-decoration: none; }
+  .btn.ghost { border-color: var(--line); color: var(--soft); }
+  .btn.ghost:hover { background: var(--card); color: var(--ink); }
+
+  /* Portfolio */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; }
+  .stat .s-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+  .stat .s-value { font-family: 'Newsreader', serif; font-size: 1.45rem; margin-top: 4px; }
+  .pos { color: #1a7a4a; } .neg { color: #b3372f; }
+  .chart-box { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 22px; margin-bottom: 28px; }
+  .chart-box canvas { width: 100% !important; height: 300px !important; }
+  table.holdings { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .holdings th {
+    text-align: left; font-weight: 500; font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--faint); padding: 10px 12px; border-bottom: 1px solid var(--line);
+  }
+  .holdings td { padding: 12px; border-bottom: 1px solid var(--line); color: var(--soft); }
+  .holdings td.sym { font-weight: 500; color: var(--ink); }
+  .holdings th.num, .holdings td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .pf-note { margin-top: 14px; font-size: 0.78rem; color: var(--faint); }
+  .sample-badge {
+    display: none; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #8a6d1a; background: #faf3dd; border: 1px solid #eadfb8;
+    padding: 3px 12px; border-radius: 999px; margin-left: 12px; vertical-align: middle;
+  }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } .holdings .hide-m { display: none; } }
+
+  /* Deck viewer modal */
+  .modal {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(20,20,20,0.75); padding: 4vh 4vw;
+  }
+  .modal.open { display: flex; flex-direction: column; }
+  .modal-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    color: #eee; padding: 0 4px 12px; font-size: 0.9rem;
+  }
+  .modal-bar a { color: #eee; font-size: 0.82rem; margin-right: 18px; }
+  .modal-close { cursor: pointer; background: none; border: none; color: #eee; font-size: 1.6rem; line-height: 1; }
+  .modal iframe { flex: 1; width: 100%; border: none; border-radius: 6px; background: #fff; }
+
+  /* Education */
+  .edu h3 { font-size: 1.4rem; }
+  .edu .degree { font-style: italic; font-family: 'Newsreader', serif; color: var(--soft); margin: 4px 0 14px; }
+  .edu p { font-size: 0.93rem; color: var(--soft); max-width: 620px; }
+  .edu .gpa { display: inline-block; margin-top: 14px; font-size: 0.82rem; letter-spacing: 0.06em; color: var(--accent); border: 1px solid var(--line); padding: 5px 14px; border-radius: 999px; background: var(--card); }
+
+  /* Leadership */
+  .lead-item { padding: 16px 0; }
+  .lead-item + .lead-item { border-top: 1px solid var(--line); }
+  .lead-item h3 { font-size: 1.1rem; display: inline; }
+  .lead-item .when { font-size: 0.8rem; color: var(--faint); margin-left: 10px; }
+  .lead-item p { font-size: 0.9rem; color: var(--soft); margin-top: 4px; max-width: 620px; }
+
+  /* Skills */
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    font-size: 0.83rem; color: var(--soft); background: var(--card);
+    border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px;
+  }
+  .skills-group { margin-bottom: 26px; }
+  .skills-group .g-label { font-size: 0.8rem; color: var(--faint); margin-bottom: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Contact */
+  .contact { text-align: center; padding: 80px 0 90px; }
+  .contact h2 { font-size: 2rem; margin-bottom: 12px; }
+  .contact p { color: var(--soft); font-size: 0.95rem; }
+  .contact .email {
+    display: inline-block; margin-top: 24px; font-size: 1.02rem;
+    border: 1px solid var(--ink); padding: 12px 32px; border-radius: 999px; color: var(--ink);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .contact .email:hover { background: var(--ink); color: var(--bg); text-decoration: none; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0; text-align: center; font-size: 0.78rem; color: var(--faint); letter-spacing: 0.04em; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 2.3rem; }
+    .job { grid-template-columns: 1fr; gap: 4px; }
+    .nav-links a { margin-left: 14px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-name">Stephen Wang</span>
+    <span class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </span>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Stephen Wang</h1>
+    <p class="tagline">Economics student at NYU focused on investment banking, private equity, and special-situations investing — with a side interest in applying AI to real workflows.</p>
+    <p class="meta"><span>New York, NY</span><span>NYU '28 · Economics</span><span><a href="mailto:stephenwang118@outlook.com">stephenwang118@outlook.com</a></span></p>
+  </div>
+</header>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-label">Experience</div>
+
+    <div class="job">
+      <div class="when">May 2026 — Present</div>
+      <div>
+        <h3>Concentra Capital Advisor</h3>
+        <div class="role">Investment Banking Summer Intern · New York</div>
+        <ul class="points">
+          <li>Reformat QuickBooks exports into the firm's standardized model to support enterprise valuation and benchmarking of ISP acquisition targets.</li>
+          <li>Analyze target financials and normalize EBITDA — flagging owner add-backs and one-time items, and building diligence questions for each.</li>
+          <li>Co-developed an AI agent–powered workflow to research and profile potential buyers, accelerating buyer-list build-out across live deals.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">Dec 2025 — Mar 2026</div>
+      <div>
+        <h3>Young America Capital</h3>
+        <div class="role">Investment Banking Intern · New York</div>
+        <ul class="points">
+          <li>Prepared client-facing pitch presentations for two prospective engagements, articulating sector expertise and transaction experience.</li>
+          <li>Conducted market research across dental clinical services and home care, analyzing trends, growth drivers, and competitive dynamics.</li>
+          <li>Advised the seller of a $12M senior home care services business in NJ — analyzed 13 comparable middle-market transactions from Pitchbook to support valuation, and identified potential investors and lenders.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">Jul — Aug 2025</div>
+      <div>
+        <h3>Shouzheng Desheng Capital Management</h3>
+        <div class="role">Private Equity Intern · Beijing</div>
+        <ul class="points">
+          <li>Produced 4 sector reports on optical modules and the lithium battery industry for the investment team at this PE subsidiary of Capital Securities.</li>
+          <li>Compiled post-investment reports tracking operational and financial KPIs to inform portfolio management decisions.</li>
+          <li>Attended investor roadshows and synthesized takeaways for senior associates, supporting deal sourcing and investor relations.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="when">Aug 2024 — Mar 2025</div>
+      <div>
+        <h3>Funovo</h3>
+        <div class="role">English Mentor & Vertical AI Developer · Beijing</div>
+        <ul class="points">
+          <li>Developed and released a vertical GPT generating custom example sentences, lifting students' vocabulary recall by 30%+ within four weeks.</li>
+          <li>Designed personalized learning strategies for middle and high school students, improving vocabulary retention and reading comprehension.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-label">Selected Projects</div>
+    <div class="projects">
+
+      <div class="card">
+        <span class="tag">Equity Pitch · Competition Captain</span>
+        <h3>Philip Morris International (NYSE: PM)</h3>
+        <p>Led a four-person team as captain in an undergraduate pitch competition. Built a three-statement DCF with sensitivity analysis quantifying the smoke-free transition upside (IQOS, ZYN) against an underpriced legacy cigarette business, arriving at a $233.54 five-year target.</p>
+        <div class="facts"><span>Long thesis</span><span>3-statement DCF</span><span>Mar 2026</span></div>
+        <div class="actions">
+          <button class="btn" onclick="openDeck('decks/philip-morris-pitch.pdf','Philip Morris International — Pitch Deck')">View full deck</button>
+          <a class="btn ghost" href="decks/philip-morris-pitch.pdf" target="_blank">Open in new tab</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Financial Statement Analysis · Group Project</span>
+        <h3>Unity Software (NYSE: U)</h3>
+        <p>Investment recommendation built with a four-person team: company overview, historical financials, forecast, and thesis on Unity's engine and monetization business, presented as a full recommendation deck.</p>
+        <div class="facts"><span>Team of 4</span><span>Apr 2026</span></div>
+        <div class="actions">
+          <button class="btn" onclick="openDeck('decks/unity-recommendation.pdf','Unity Software — Investment Recommendation')">View full deck</button>
+          <a class="btn ghost" href="decks/unity-recommendation.pdf" target="_blank">Open in new tab</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tag">Venture Analysis</span>
+        <h3>Hamming.ai — Voice-Agent Testing Platform</h3>
+        <p>Analyzed a YC S24 startup building testing and observability for AI voice agents: mapped the product (simulated load testing, production monitoring, 50+ eval metrics), competitive landscape, and a $24B TAM sizing for AI call-agent observability.</p>
+        <div class="facts"><span>Team of 4</span><span>Market sizing & competitive analysis</span></div>
+        <div class="actions">
+          <button class="btn" onclick="openDeck('decks/hamming-ai.pdf','Hamming.ai — Venture Analysis')">View full deck</button>
+          <a class="btn ghost" href="decks/hamming-ai.pdf" target="_blank">Open in new tab</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="wrap">
+    <div class="sec-label">Portfolio<span class="sample-badge" id="sampleBadge">Sample data</span></div>
+
+    <div class="stats">
+      <div class="stat"><div class="s-label">Total value</div><div class="s-value" id="stNav">—</div></div>
+      <div class="stat"><div class="s-label">Total return</div><div class="s-value" id="stTotal">—</div></div>
+      <div class="stat"><div class="s-label">Last day</div><div class="s-value" id="stDay">—</div></div>
+      <div class="stat"><div class="s-label">Updated</div><div class="s-value" id="stUpdated">—</div></div>
+    </div>
+
+    <div class="chart-box"><canvas id="navChart"></canvas></div>
+
+    <table class="holdings">
+      <thead><tr>
+        <th>Symbol</th><th class="hide-m">Name</th><th class="num hide-m">Qty</th><th class="num hide-m">Price</th>
+        <th class="num">Value</th><th class="num">Weight</th><th class="num">Unrealized P&L</th>
+      </tr></thead>
+      <tbody id="holdingsBody"></tbody>
+    </table>
+
+    <p class="pf-note">Live snapshot of my Interactive Brokers account, refreshed daily. Not investment advice.</p>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-label">Education</div>
+    <div class="edu">
+      <h3>New York University</h3>
+      <div class="degree">B.A. in Economics · Expected May 2028 · Honors Candidate</div>
+      <p>Coursework in financial accounting, financial statement analysis, and foundations of finance. Programs include the Goldman Sachs Possibility Series, JPMC Freshman Focus, Point72 Academy, and the SVS Venture Capital Pitch Competition. Holder of the Securities Industry Essentials (SIE) certification.</p>
+      <span class="gpa">Major GPA 4.00 / 4.00</span>
+    </div>
+  </div>
+</section>
+
+<section id="leadership">
+  <div class="wrap">
+    <div class="sec-label">Leadership & Activities</div>
+
+    <div class="lead-item">
+      <h3>NYU Stern Special Situation Investing Team</h3><span class="when">Feb 2026 — Present</span>
+      <p>Equity research on distressed and event-driven opportunities — spin-offs, restructurings, post-bankruptcy equities — presenting long/short recommendations.</p>
+    </div>
+
+    <div class="lead-item">
+      <h3>NYU ΗΩΧ — East Asian Business Fraternity</h3><span class="when">Mar 2026 — Present</span>
+      <p>Professional development workshops, Morgan Stanley Wealth Management networking, and a cross-chapter speed startup pitch covering TAM sizing, business model, and growth strategy.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-label">Skills & Interests</div>
+
+    <div class="skills-group">
+      <div class="g-label">Skills</div>
+      <div class="pills">
+        <span class="pill">Excel</span><span class="pill">PowerPoint</span><span class="pill">SQL</span>
+        <span class="pill">Pitchbook</span><span class="pill">Generative AI & Prompt Engineering</span>
+        <span class="pill">DCF & Valuation</span>
+      </div>
+    </div>
+
+    <div class="skills-group">
+      <div class="g-label">Languages</div>
+      <div class="pills">
+        <span class="pill">English</span><span class="pill">Mandarin</span><span class="pill">Spanish (limited)</span>
+      </div>
+    </div>
+
+    <div class="skills-group">
+      <div class="g-label">Beyond the desk</div>
+      <div class="pills">
+        <span class="pill">Bartending</span><span class="pill">Poker</span><span class="pill">History</span>
+        <span class="pill">Real Madrid</span><span class="pill">Snorkelling</span><span class="pill">Fishing</span>
+        <span class="pill">Travel</span><span class="pill">Reading & journaling</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2 class="serif">Get in touch</h2>
+    <p>Open to conversations about investing, banking, and interesting projects.</p>
+    <a class="email" href="mailto:stephenwang118@outlook.com">stephenwang118@outlook.com</a>
+  </div>
+</section>
+
+<footer>Stephen Wang · New York, NY</footer>
+
+<div class="modal" id="deckModal" onclick="if(event.target===this)closeDeck()">
+  <div class="modal-bar">
+    <span id="deckTitle" class="serif"></span>
+    <span>
+      <a id="deckNewTab" href="#" target="_blank">Open in new tab ↗</a>
+      <button class="modal-close" onclick="closeDeck()" aria-label="Close">×</button>
+    </span>
+  </div>
+  <iframe id="deckFrame" src="" title="Deck viewer"></iframe>
+</div>
+
+<script>
+  function openDeck(src, title) {
+    document.getElementById('deckFrame').src = src;
+    document.getElementById('deckTitle').textContent = title;
+    document.getElementById('deckNewTab').href = src;
+    document.getElementById('deckModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDeck() {
+    document.getElementById('deckModal').classList.remove('open');
+    document.getElementById('deckFrame').src = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDeck(); });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  // Set to false to hide dollar amounts and show percentages only
+  const SHOW_DOLLARS = true;
+
+  const SAMPLE = { sample: true, updated: "2026-07-03", currency: "USD",
+    series: [["2026-04-01",25000],["2026-04-08",24620],["2026-04-15",25110],["2026-04-22",25480],["2026-04-29",25320],["2026-05-06",25890],["2026-05-13",26140],["2026-05-20",25980],["2026-05-27",26410],["2026-06-03",26720],["2026-06-10",26550],["2026-06-17",26900],["2026-06-24",27120],["2026-07-01",27260],["2026-07-03",27350]].map(([date,nav])=>({date,nav})),
+    positions: [
+      {symbol:"VOO",name:"Vanguard S&P 500 ETF",qty:16,price:612.50,value:9800,pnl:800,pnlPct:8.89},
+      {symbol:"NVDA",name:"NVIDIA Corp",qty:35,price:177.14,value:6200,pnl:1400,pnlPct:29.17},
+      {symbol:"MSFT",name:"Microsoft Corp",qty:10,price:490,value:4900,pnl:350,pnlPct:7.69},
+      {symbol:"PM",name:"Philip Morris International",qty:20,price:187.50,value:3750,pnl:550,pnlPct:17.19},
+      {symbol:"U",name:"Unity Software",qty:100,price:27,value:2700,pnl:-300,pnlPct:-10.00}
+    ]};
+
+  const fmtUSD = v => v.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+  const fmtUSD2 = v => v.toLocaleString('en-US',{style:'currency',currency:'USD'});
+  const fmtPct = v => (v>=0?'+':'') + v.toFixed(2) + '%';
+  const cls = v => v>=0 ? 'pos' : 'neg';
+
+  function renderPortfolio(d) {
+    const s = d.series, last = s[s.length-1], first = s[0];
+    const totalPct = (last.nav/first.nav - 1) * 100;
+    const dayPct = s.length > 1 ? (last.nav/s[s.length-2].nav - 1) * 100 : 0;
+
+    document.getElementById('stNav').textContent = SHOW_DOLLARS ? fmtUSD(last.nav) : '•••';
+    const elT = document.getElementById('stTotal');
+    elT.textContent = fmtPct(totalPct); elT.className = 's-value ' + cls(totalPct);
+    const elD = document.getElementById('stDay');
+    elD.textContent = fmtPct(dayPct); elD.className = 's-value ' + cls(dayPct);
+    document.getElementById('stUpdated').textContent = d.updated;
+    if (d.sample) document.getElementById('sampleBadge').style.display = 'inline-block';
+
+    const totalVal = d.positions.reduce((a,p)=>a+p.value,0);
+    document.getElementById('holdingsBody').innerHTML = d.positions
+      .slice().sort((a,b)=>b.value-a.value)
+      .map(p => `<tr>
+        <td class="sym">${p.symbol}</td><td class="hide-m">${p.name||''}</td>
+        <td class="num hide-m">${SHOW_DOLLARS ? p.qty : '•'}</td>
+        <td class="num hide-m">${SHOW_DOLLARS ? fmtUSD2(p.price) : '•'}</td>
+        <td class="num">${SHOW_DOLLARS ? fmtUSD(p.value) : '•••'}</td>
+        <td class="num">${(p.value/totalVal*100).toFixed(1)}%</td>
+        <td class="num ${cls(p.pnl)}">${SHOW_DOLLARS ? fmtUSD(p.pnl)+' · ' : ''}${fmtPct(p.pnlPct)}</td>
+      </tr>`).join('');
+
+    const base = first.nav;
+    new Chart(document.getElementById('navChart'), {
+      type: 'line',
+      data: { labels: s.map(x=>x.date), datasets: [{
+        data: s.map(x => SHOW_DOLLARS ? x.nav : (x.nav/base-1)*100),
+        borderColor: '#1f3a5f', backgroundColor: 'rgba(31,58,95,0.06)',
+        fill: true, tension: 0.3, pointRadius: 0, pointHitRadius: 12, borderWidth: 2
+      }]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: {
+          label: c => SHOW_DOLLARS ? fmtUSD2(c.parsed.y) : fmtPct(c.parsed.y)
+        }}},
+        scales: {
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: '#8a8a8a', font: { size: 11 } } },
+          y: { grid: { color: '#eeebe4' }, ticks: { color: '#8a8a8a', font: { size: 11 },
+               callback: v => SHOW_DOLLARS ? fmtUSD(v) : fmtPct(v) } }
+        }
+      }
+    });
+  }
+
+  function whenChartReady(cb) {
+    if (window.Chart) return cb();
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
+    s.onload = cb;
+    document.head.appendChild(s);
+  }
+
+  (async () => {
+    let data = SAMPLE;
+    try {
+      const r = await fetch('portfolio.json', { cache: 'no-store' });
+      if (r.ok) data = await r.json();
+    } catch (e) { /* local file:// preview - use sample */ }
+    whenChartReady(() => renderPortfolio(data));
+  })();
+</script>
+
+</body>
+</html>
