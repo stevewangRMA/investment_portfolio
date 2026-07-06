@@ -518,7 +518,8 @@
   (async () => {
     let data = SAMPLE;
     try {
-      const r = await fetch('portfolio.json', { cache: 'no-store' });
+      // unique query string defeats both browser and CDN caching
+      const r = await fetch('portfolio.json?t=' + Date.now(), { cache: 'no-store' });
       if (r.ok) data = await r.json();
     } catch (e) { /* local file:// preview - use sample */ }
     whenChartReady(() => renderPortfolio(data));
