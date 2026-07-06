@@ -1,0 +1,34 @@
+name: Update portfolio
+
+on:
+  schedule:
+    # 10:30 UTC = 6:30am ET, after IBKR end-of-day data is available
+    - cron: "30 10 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch portfolio from IBKR
+        env:
+          IBKR_FLEX_TOKEN: ${{ secrets.IBKR_FLEX_TOKEN }}
+          IBKR_FLEX_QUERY_ID: ${{ secrets.IBKR_FLEX_QUERY_ID }}
+        run: python scripts/fetch_portfolio.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "portfolio-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio.json
+          git diff --cached --quiet || git commit -m "Update portfolio data $(date -u +%F)"
+          git push
