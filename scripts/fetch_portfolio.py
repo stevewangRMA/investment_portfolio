@@ -159,12 +159,13 @@ def parse(root: ET.Element) -> dict:
     # later for ACH), so these dates must be corrected against the NAV series.
     ct = {}
     if not sof:
-        for row in root.iter("CashTransaction"):
-            # Skip summary rows if level of detail is reported, to avoid
-            # double-counting (IBKR can emit SUMMARY + DETAIL for each txn)
-            lod = (row.get("levelOfDetail") or "").upper()
-            if lod and lod != "DETAIL":
-                continue
+        rows = list(root.iter("CashTransaction"))
+        # Avoid double-counting when IBKR emits both SUMMARY and DETAIL rows:
+        # use DETAIL rows if any exist, otherwise take whatever is there
+        detail = [r for r in rows if (r.get("levelOfDetail") or "").upper() == "DETAIL"]
+        if detail:
+            rows = detail
+        for row in rows:
             ttype = (row.get("type") or "").lower()
             if "deposit" in ttype or "withdraw" in ttype:
                 d = norm_date(row.get("settleDate") or row.get("dateTime") or row.get("reportDate"))
