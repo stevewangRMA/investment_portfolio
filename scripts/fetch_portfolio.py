@@ -135,6 +135,11 @@ def parse(root: ET.Element) -> dict:
 
     flows = {}
     for row in root.iter("CashTransaction"):
+        # Skip summary rows if level of detail is reported, to avoid
+        # double-counting (IBKR can emit SUMMARY + DETAIL for each txn)
+        lod = (row.get("levelOfDetail") or "").upper()
+        if lod and lod != "DETAIL":
+            continue
         ttype = (row.get("type") or "").lower()
         if "deposit" in ttype or "withdraw" in ttype:
             date = norm_date(row.get("dateTime") or row.get("reportDate"))
