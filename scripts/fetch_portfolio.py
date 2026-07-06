@@ -7,9 +7,10 @@ Required env vars:
   IBKR_FLEX_QUERY_ID  - ID of the Flex Query to run
 
 The Flex Query must include (XML format, period: Last 365 Calendar Days):
-  - "Equity Summary in Base by Report Date" (fields: Report Date, Total)
-  - "Open Positions" (fields: Symbol, Description, Quantity, Mark Price,
-     Position Value, Fifo Pnl Unrealized, Cost Basis Money)
+  - "Net Asset Value (NAV) in Base" (all fields)
+  - "Open Positions" (all fields)
+  - "Cash Transactions" (all fields) - used to detect deposits/withdrawals
+    so returns are time-weighted (deposits don't count as gains)
 
 Uses stdlib only - no pip installs needed.
 """
@@ -123,6 +124,31 @@ def parse(root: ET.Element) -> dict:
             "No NAV rows found - make sure the Flex Query includes "
             "'Net Asset Value (NAV) in Base' with all fields selected"
         )
+
+    # External cash flows (deposits/withdrawals) from Cash Transactions.
+    # Amounts are signed: deposits positive, withdrawals negative.
+    def norm_date(v):
+        v = (v or "").split(";")[0].strip()
+        if len(v) == 8 and v.isdigit():
+            return f"{v[:4]}-{v[4:6]}-{v[6:]}"
+        return v[:10]
+
+    flows = {}
+    for row in root.iter("CashTransaction"):
+        ttype = (row.get("type") or "").lower()
+        if "deposit" in ttype or "withdraw" in ttype:
+            date = norm_date(row.get("dateTime") or row.get("reportDate"))
+            amt = f(row.get("amount"))
+            if date and amt:
+                flows[date] = round(flows.get(date, 0.0) + amt, 2)
+
+    # Attach each flow to the first NAV date on/after the flow date
+    dates = [p["date"] for p in series]
+    for fdate, amt in sorted(flows.items()):
+        target = next((d for d in dates if d >= fdate), None)
+        if target:
+            p = next(p for p in series if p["date"] == target)
+            p["flow"] = round(p.get("flow", 0.0) + amt, 2)
 
     return {
         "updated": series[-1]["date"],
