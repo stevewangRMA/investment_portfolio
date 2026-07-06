@@ -424,6 +424,8 @@
 <script>
   // Set to false to hide dollar amounts and show percentages only
   const SHOW_DOLLARS = true;
+  // true = chart shows cumulative performance (%); false = chart shows account value ($)
+  const CHART_PERFORMANCE = true;
 
   const SAMPLE = { sample: true, updated: "2026-07-03", currency: "USD",
     series: [["2026-04-01",25000],["2026-04-08",24620],["2026-04-15",25110],["2026-04-22",25480],["2026-04-29",25320],["2026-05-06",25890],["2026-05-13",26140],["2026-05-20",25980],["2026-05-27",26410],["2026-06-03",26720],["2026-06-10",26550],["2026-06-17",26900],["2026-06-24",27120],["2026-07-01",27260],["2026-07-03",27350]].map(([date,nav])=>({date,nav})),
@@ -484,7 +486,7 @@
     new Chart(document.getElementById('navChart'), {
       type: 'line',
       data: { labels: s.map(x=>x.date), datasets: [{
-        data: s.map((x,i) => SHOW_DOLLARS ? x.nav : twrIndex[i]),
+        data: s.map((x,i) => (CHART_PERFORMANCE || !SHOW_DOLLARS) ? twrIndex[i] : x.nav),
         borderColor: '#1f3a5f', backgroundColor: 'rgba(31,58,95,0.06)',
         fill: true, tension: 0.3, pointHitRadius: 12, borderWidth: 2,
         pointRadius: s.map(x => x.flow ? 3.5 : 0),
@@ -493,13 +495,13 @@
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false }, tooltip: { callbacks: {
-          label: c => (SHOW_DOLLARS ? fmtUSD2(c.parsed.y) : fmtPct(c.parsed.y)) +
+          label: c => ((CHART_PERFORMANCE || !SHOW_DOLLARS) ? fmtPct(c.parsed.y) : fmtUSD2(c.parsed.y)) +
                       (s[c.dataIndex].flow ? (s[c.dataIndex].flow > 0 ? '  ·  deposit' : '  ·  withdrawal') : '')
         }}},
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: '#8a8a8a', font: { size: 11 } } },
           y: { grid: { color: '#eeebe4' }, ticks: { color: '#8a8a8a', font: { size: 11 },
-               callback: v => SHOW_DOLLARS ? fmtUSD(v) : fmtPct(v) } }
+               callback: v => (CHART_PERFORMANCE || !SHOW_DOLLARS) ? fmtPct(v) : fmtUSD(v) } }
         }
       }
     });
