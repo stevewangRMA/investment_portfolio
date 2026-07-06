@@ -21,6 +21,7 @@ import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from datetime import date as _date, timedelta
 
 BASE = "https://ndcdyn.interactivebrokers.com/AccountManagement/FlexWebService"
 OUT_PATH = os.path.join(os.path.dirname(__file__), "..", "portfolio.json")
@@ -125,7 +126,7 @@ def parse(root: ET.Element) -> dict:
             "'Net Asset Value (NAV) in Base' with all fields selected"
         )
 
-    # External cash flows (deposits/withdrawals) from Cash Transactions.
+    # External cash flows (deposits/withdrawals).
     # Amounts are signed: deposits positive, withdrawals negative.
     def norm_date(v):
         v = (v or "").split(";")[0].strip()
@@ -133,27 +134,74 @@ def parse(root: ET.Element) -> dict:
             return f"{v[:4]}-{v[4:6]}-{v[6:]}"
         return v[:10]
 
-    flows = {}
-    for row in root.iter("CashTransaction"):
-        # Skip summary rows if level of detail is reported, to avoid
-        # double-counting (IBKR can emit SUMMARY + DETAIL for each txn)
-        lod = (row.get("levelOfDetail") or "").upper()
-        if lod and lod != "DETAIL":
-            continue
-        ttype = (row.get("type") or "").lower()
-        if "deposit" in ttype or "withdraw" in ttype:
-            date = norm_date(row.get("dateTime") or row.get("reportDate"))
-            amt = f(row.get("amount"))
-            if date and amt:
-                flows[date] = round(flows.get(date, 0.0) + amt, 2)
+    # Preferred source: Statement of Funds - its rows are booked on the exact
+    # date NAV reflects the money. (Add the "Statement of Funds" section to
+    # the Flex Query to enable this.)
+    sof = {}
+    sof_rows = list(root.iter("StatementOfFundsLine"))
+    if sof_rows:
+        lods = {(r.get("levelOfDetail") or "") for r in sof_rows}
+        base_lod = next((l for l in lods if "base" in l.lower()), None)
+        for row in sof_rows:
+            if base_lod and (row.get("levelOfDetail") or "") != base_lod:
+                continue
+            code = (row.get("activityCode") or "").upper()
+            desc = (row.get("activityDescription") or "").lower()
+            if code in ("DEP", "WITH") or "fund transfer" in desc \
+               or "deposit" in desc or "withdrawal" in desc:
+                d = norm_date(row.get("date") or row.get("reportDate") or row.get("settleDate"))
+                amt = f(row.get("amount"))
+                if d and amt:
+                    sof[d] = round(sof.get(d, 0.0) + amt, 2)
 
-    # Attach each flow to the first NAV date on/after the flow date
+    # Fallback source: Cash Transactions. Caveat: rows are stamped when the
+    # transfer was REQUESTED, but NAV only moves when it SETTLES (~3-7 days
+    # later for ACH), so these dates must be corrected against the NAV series.
+    ct = {}
+    if not sof:
+        for row in root.iter("CashTransaction"):
+            # Skip summary rows if level of detail is reported, to avoid
+            # double-counting (IBKR can emit SUMMARY + DETAIL for each txn)
+            lod = (row.get("levelOfDetail") or "").upper()
+            if lod and lod != "DETAIL":
+                continue
+            ttype = (row.get("type") or "").lower()
+            if "deposit" in ttype or "withdraw" in ttype:
+                d = norm_date(row.get("settleDate") or row.get("dateTime") or row.get("reportDate"))
+                amt = f(row.get("amount"))
+                if d and amt:
+                    ct[d] = round(ct.get(d, 0.0) + amt, 2)
+
     dates = [p["date"] for p in series]
-    for fdate, amt in sorted(flows.items()):
-        target = next((d for d in dates if d >= fdate), None)
+    navs = {p["date"]: p["nav"] for p in series}
+    by_date = {p["date"]: p for p in series}
+
+    def attach(target, amt):
         if target:
-            p = next(p for p in series if p["date"] == target)
+            p = by_date[target]
             p["flow"] = round(p.get("flow", 0.0) + amt, 2)
+
+    if sof:
+        # Exact dates: attach to first NAV date on/after
+        for fdate, amt in sorted(sof.items()):
+            attach(next((d for d in dates if d >= fdate), None), amt)
+    else:
+        # Snap each flow to the nearby day whose NAV change best matches it
+        for fdate, amt in sorted(ct.items()):
+            try:
+                fd = _date.fromisoformat(fdate)
+            except ValueError:
+                continue
+            lo = (fd - timedelta(days=3)).isoformat()
+            hi = (fd + timedelta(days=14)).isoformat()
+            best, best_diff = None, None
+            for i in range(1, len(dates)):
+                if lo <= dates[i] <= hi:
+                    delta = navs[dates[i]] - navs[dates[i - 1]]
+                    diff = abs(delta - amt)
+                    if best_diff is None or diff < best_diff:
+                        best, best_diff = dates[i], diff
+            attach(best or next((d for d in dates if d >= fdate), None), amt)
 
     return {
         "updated": series[-1]["date"],

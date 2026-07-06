@@ -442,16 +442,17 @@
 
   function renderPortfolio(d) {
     const s = d.series, last = s[s.length-1], first = s[0];
-    // Time-weighted return: chain daily returns, stripping out
-    // deposits/withdrawals (series[i].flow) so they don't count as gains
+    // Time-weighted return: chain daily returns with deposits/withdrawals
+    // (series[i].flow) added to the day's starting base, so external cash
+    // doesn't count as gain but does earn that day's market return
     let twr = 1;
     for (let i = 1; i < s.length; i++) {
-      const prev = s[i-1].nav;
-      if (prev > 0) twr *= (s[i].nav - (s[i].flow || 0)) / prev;
+      const b = s[i-1].nav + (s[i].flow || 0);
+      if (b > 0) twr *= s[i].nav / b;
     }
     const totalPct = (twr - 1) * 100;
-    const dayPct = s.length > 1 && s[s.length-2].nav > 0
-      ? ((last.nav - (last.flow || 0)) / s[s.length-2].nav - 1) * 100 : 0;
+    const dayBase = s.length > 1 ? s[s.length-2].nav + (last.flow || 0) : 0;
+    const dayPct = dayBase > 0 ? (last.nav / dayBase - 1) * 100 : 0;
 
     document.getElementById('stNav').textContent = SHOW_DOLLARS ? fmtUSD(last.nav) : '•••';
     const elT = document.getElementById('stTotal');
@@ -476,8 +477,8 @@
     // In %-mode, chart the TWR index instead of raw NAV so deposits don't show as jumps
     const twrIndex = [0];
     for (let i = 1; i < s.length; i++) {
-      const prev = s[i-1].nav;
-      const r = prev > 0 ? (s[i].nav - (s[i].flow || 0)) / prev : 1;
+      const b = s[i-1].nav + (s[i].flow || 0);
+      const r = b > 0 ? s[i].nav / b : 1;
       twrIndex.push(((1 + twrIndex[i-1]/100) * r - 1) * 100);
     }
     new Chart(document.getElementById('navChart'), {
