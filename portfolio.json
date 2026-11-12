@@ -1,11 +1,7 @@
 {
-  "updated": "2026-11-10",
+  "updated": "2026-11-11",
   "currency": "USD",
   "series": [
-    {
-      "date": "2025-11-10",
-      "nav": 87915.81
-    },
     {
       "date": "2025-11-11",
       "nav": 86622.46
@@ -1056,6 +1052,10 @@
     {
       "date": "2026-11-10",
       "nav": 104439.47
+    },
+    {
+      "date": "2026-11-11",
+      "nav": 111269.96
     }
   ],
   "positions": [
@@ -1063,82 +1063,82 @@
       "symbol": "LITE",
       "name": "LUMENTUM HOLDINGS INC",
       "qty": 40.0,
-      "price": 585.57,
-      "value": 23422.8,
-      "pnl": -7590.18,
-      "pnlPct": -24.47
+      "price": 648.06,
+      "value": 25922.4,
+      "pnl": -5090.58,
+      "pnlPct": -16.41
     },
     {
       "symbol": "MRVL",
       "name": "MARVELL TECHNOLOGY INC",
       "qty": 127.0,
-      "price": 154.39,
-      "value": 19607.53,
-      "pnl": 1034.26,
-      "pnlPct": 5.57
+      "price": 168.8,
+      "value": 21437.6,
+      "pnl": 2864.33,
+      "pnlPct": 15.42
     },
     {
       "symbol": "PM",
       "name": "PHILIP MORRIS INTERNATIONAL",
       "qty": 80.0,
-      "price": 194.25,
-      "value": 15540.0,
-      "pnl": 623.67,
-      "pnlPct": 4.18
+      "price": 196.35,
+      "value": 15708.0,
+      "pnl": 791.67,
+      "pnlPct": 5.31
     },
     {
       "symbol": "GOOG",
       "name": "ALPHABET INC-CL C",
       "qty": 50.0,
-      "price": 284.92,
-      "value": 14246.0,
-      "pnl": -1034.2,
-      "pnlPct": -6.77
+      "price": 290.63,
+      "value": 14531.5,
+      "pnl": -748.7,
+      "pnlPct": -4.9
     },
     {
       "symbol": "QQQ",
       "name": "INVESCO QQQ TRUST SERIES 1",
       "qty": 16.0,
-      "price": 674.76,
-      "value": 10796.16,
-      "pnl": 84.31,
-      "pnlPct": 0.79
+      "price": 690.38,
+      "value": 11046.08,
+      "pnl": 334.23,
+      "pnlPct": 3.12
     },
     {
       "symbol": "SNDK",
       "name": "SANDISK CORP",
       "qty": 8.0,
-      "price": 859.99,
-      "value": 6879.92,
-      "pnl": -4579.93,
-      "pnlPct": -39.97
+      "price": 977.69,
+      "value": 7821.52,
+      "pnl": -3638.33,
+      "pnlPct": -31.75
     },
     {
       "symbol": "CEG",
       "name": "CONSTELLATION ENERGY",
       "qty": 15.0,
-      "price": 267.76,
-      "value": 4016.4,
-      "pnl": -1552.4,
-      "pnlPct": -27.88
+      "price": 274.73,
+      "value": 4120.95,
+      "pnl": -1447.85,
+      "pnlPct": -26.0
     },
     {
       "symbol": "NBIS",
       "name": "NEBIUS GROUP NV",
       "qty": 25.0,
-      "price": 134.0,
-      "value": 3350.0,
-      "pnl": -3164.68,
-      "pnlPct": -48.58
+      "price": 154.69,
+      "value": 3867.25,
+      "pnl": -2647.43,
+      "pnlPct": -40.64
     },
     {
       "symbol": "VCX",
       "name": "FUNDRISE INNOVATION FUND LLC",
       "qty": 100.0,
-      "price": 21.41,
-      "value": 2141.0,
-      "pnl": -6885.31,
-      "pnlPct": -76.28
+      "price": 23.75,
+      "value": 2375.0,
+      "pnl": -6651.31,
+      "pnlPct": -73.69
     }
   ]
 }
